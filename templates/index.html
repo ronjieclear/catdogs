@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dog Cat CNN Detector</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <p class="eyebrow">TensorFlow CNN</p>
+                <h1>Dog or Cat Detector</h1>
+                <p class="subtle">Upload an image and the trained model will predict whether it sees a dog or a cat.</p>
+            </div>
+
+            <form class="upload-panel" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/png, image/jpeg" required>
+                <button type="submit">Detect Image</button>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+            </form>
+        </section>
+
+        {% if result %}
+        <section class="result-grid">
+            <div class="preview">
+                <img src="{{ result.image_url }}" alt="Uploaded image">
+            </div>
+            <div class="prediction">
+                <p class="eyebrow">Prediction</p>
+                <h2>{{ result.predicted_label }}</h2>
+                <div class="metric-row">
+                    <span>Confidence</span>
+                    <strong>{{ result.confidence }}</strong>
+                </div>
+                <div class="metric-row">
+                    <span>Cat probability</span>
+                    <strong>{{ result.cat_probability }}</strong>
+                </div>
+                <div class="metric-row">
+                    <span>Dog probability</span>
+                    <strong>{{ result.dog_probability }}</strong>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="metrics">
+            <div>
+                <span>Test Accuracy</span>
+                <strong>{{ test_accuracy }}</strong>
+            </div>
+            <div>
+                <span>Cat F1</span>
+                <strong>{{ cat_f1 }}</strong>
+            </div>
+            <div>
+                <span>Dog F1</span>
+                <strong>{{ dog_f1 }}</strong>
+            </div>
+            <div>
+                <span>Macro F1</span>
+                <strong>{{ macro_f1 }}</strong>
+            </div>
+            <div>
+                <span>Weighted F1</span>
+                <strong>{{ weighted_f1 }}</strong>
+            </div>
+        </section>
+
+        <section class="two-column">
+            <div>
+                <h2>Confusion Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Predicted Cat</th>
+                            <th>Predicted Dog</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Actual Cat</th>
+                            <td>{{ confusion_matrix[0][0] }}</td>
+                            <td>{{ confusion_matrix[0][1] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Actual Dog</th>
+                            <td>{{ confusion_matrix[1][0] }}</td>
+                            <td>{{ confusion_matrix[1][1] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h2>Model Flow</h2>
+                <ol class="flow">
+                    <li>Image input</li>
+                    <li>Hidden Conv2D layer 1</li>
+                    <li>Hidden Conv2D layer 2</li>
+                    <li>Hidden Conv2D layer 3</li>
+                    <li>Hidden Dense layer</li>
+                    <li>Output sigmoid layer</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Training Images</h2>
+            <div class="artifact-grid">
+                <figure>
+                    <img src="/tensorflow_actual_model_diagram.png" alt="Actual CNN model diagram">
+                    <figcaption>Actual TensorFlow CNN model with learned-weight summaries</figcaption>
+                </figure>
+                <figure>
+                    <img src="/tensorflow_training_history.png" alt="Training history">
+                    <figcaption>Learning plot: accuracy and loss</figcaption>
+                </figure>
+                <figure>
+                    <img src="/tensorflow_confusion_matrix.png" alt="Confusion matrix">
+                    <figcaption>Saved confusion matrix</figcaption>
+                </figure>
+                <figure>
+                    <img src="/tensorflow_sample_prediction.png" alt="Sample prediction">
+                    <figcaption>Saved sample prediction</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section>
+            <h2>Actual Model Diagram</h2>
+            <img class="model-diagram" src="/tensorflow_actual_model_diagram.png" alt="Actual TensorFlow CNN model diagram">
+        </section>
+
+        <section>
+            <h2>Current Model Layers</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Type</th>
+                        <th>Output Shape</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in layer_rows %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.type }}</td>
+                        <td>{{ row.output_shape }}</td>
+                        <td>{{ row.params }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Current Model Weight Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Weight Shape</th>
+                        <th>Mean</th>
+                        <th>Std</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Sample Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in weight_rows %}
+                    <tr>
+                        <td>{{ row.layer }}</td>
+                        <td>{{ row.shape }}</td>
+                        <td>{{ row.mean }}</td>
+                        <td>{{ row.std }}</td>
+                        <td>{{ row.minimum }}</td>
+                        <td>{{ row.maximum }}</td>
+                        <td>{{ row.sample }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
