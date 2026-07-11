@@ -112,6 +112,7 @@
 
         <section>
             <h2>Training Images</h2>
+            <p class="section-note">Click any image to view it larger.</p>
             <div class="artifact-grid">
                 <figure>
                     <button class="image-pop-button" type="button" data-large-image="/tensorflow_actual_model_diagram.png" data-large-title="Actual TensorFlow CNN model">
@@ -211,43 +212,48 @@
     </div>
 
     <script>
-        const modal = document.getElementById("imageModal");
-        const modalImage = document.getElementById("imageModalImg");
-        const modalTitle = document.getElementById("imageModalTitle");
-        const closeButton = document.querySelector(".image-modal-close");
-        const imageButtons = document.querySelectorAll(".image-pop-button");
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("imageModalImg");
+            const modalTitle = document.getElementById("imageModalTitle");
+            const closeButton = document.querySelector(".image-modal-close");
 
-        function openImageModal(button) {
-            modalImage.src = button.dataset.largeImage;
-            modalImage.alt = button.querySelector("img").alt;
-            modalTitle.textContent = button.dataset.largeTitle;
-            modal.classList.add("is-open");
-            modal.setAttribute("aria-hidden", "false");
-            closeButton.focus();
-        }
-
-        function closeImageModal() {
-            modal.classList.remove("is-open");
-            modal.setAttribute("aria-hidden", "true");
-            modalImage.src = "";
-        }
-
-        imageButtons.forEach((button) => {
-            button.addEventListener("click", () => openImageModal(button));
-        });
-
-        closeButton.addEventListener("click", closeImageModal);
-
-        modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                closeImageModal();
+            function openImageModal(button) {
+                const image = button.querySelector("img");
+                modalImage.src = button.dataset.largeImage;
+                modalImage.alt = image.alt;
+                modalTitle.textContent = button.dataset.largeTitle;
+                modal.classList.add("is-open");
+                modal.setAttribute("aria-hidden", "false");
+                closeButton.focus();
             }
-        });
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && modal.classList.contains("is-open")) {
-                closeImageModal();
+            function closeImageModal() {
+                modal.classList.remove("is-open");
+                modal.setAttribute("aria-hidden", "true");
+                modalImage.src = "";
             }
+
+            document.addEventListener("click", (event) => {
+                const button = event.target.closest(".image-pop-button");
+
+                if (button) {
+                    openImageModal(button);
+                    return;
+                }
+
+                if (event.target === modal) {
+                    closeImageModal();
+                }
+            });
+
+            closeButton.addEventListener("click", closeImageModal);
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && modal.classList.contains("is-open")) {
+                    closeImageModal();
+                }
+            });
         });
     </script>
 </body>

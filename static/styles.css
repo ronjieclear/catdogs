@@ -49,6 +49,12 @@ h2 {
     font-size: 16px;
 }
 
+.section-note {
+    margin: -4px 0 16px;
+    color: #5d6675;
+    font-size: 14px;
+}
+
 .upload-panel {
     display: grid;
     gap: 12px;
