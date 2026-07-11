@@ -114,19 +114,27 @@
             <h2>Training Images</h2>
             <div class="artifact-grid">
                 <figure>
-                    <img src="/tensorflow_actual_model_diagram.png" alt="Actual CNN model diagram">
+                    <button class="image-pop-button" type="button" data-large-image="/tensorflow_actual_model_diagram.png" data-large-title="Actual TensorFlow CNN model">
+                        <img src="/tensorflow_actual_model_diagram.png" alt="Actual CNN model diagram">
+                    </button>
                     <figcaption>Actual TensorFlow CNN model with learned-weight summaries</figcaption>
                 </figure>
                 <figure>
-                    <img src="/tensorflow_training_history.png" alt="Training history">
+                    <button class="image-pop-button" type="button" data-large-image="/tensorflow_training_history.png" data-large-title="Learning plot: accuracy and loss">
+                        <img src="/tensorflow_training_history.png" alt="Training history">
+                    </button>
                     <figcaption>Learning plot: accuracy and loss</figcaption>
                 </figure>
                 <figure>
-                    <img src="/tensorflow_confusion_matrix.png" alt="Confusion matrix">
+                    <button class="image-pop-button" type="button" data-large-image="/tensorflow_confusion_matrix.png" data-large-title="Saved confusion matrix">
+                        <img src="/tensorflow_confusion_matrix.png" alt="Confusion matrix">
+                    </button>
                     <figcaption>Saved confusion matrix</figcaption>
                 </figure>
                 <figure>
-                    <img src="/tensorflow_sample_prediction.png" alt="Sample prediction">
+                    <button class="image-pop-button" type="button" data-large-image="/tensorflow_sample_prediction.png" data-large-title="Saved sample prediction">
+                        <img src="/tensorflow_sample_prediction.png" alt="Sample prediction">
+                    </button>
                     <figcaption>Saved sample prediction</figcaption>
                 </figure>
             </div>
@@ -191,5 +199,56 @@
             </table>
         </section>
     </main>
+
+    <div class="image-modal" id="imageModal" aria-hidden="true">
+        <div class="image-modal-panel" role="dialog" aria-modal="true" aria-labelledby="imageModalTitle">
+            <div class="image-modal-header">
+                <h2 id="imageModalTitle">Image Preview</h2>
+                <button class="image-modal-close" type="button" aria-label="Close image preview">&times;</button>
+            </div>
+            <img id="imageModalImg" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("imageModalImg");
+        const modalTitle = document.getElementById("imageModalTitle");
+        const closeButton = document.querySelector(".image-modal-close");
+        const imageButtons = document.querySelectorAll(".image-pop-button");
+
+        function openImageModal(button) {
+            modalImage.src = button.dataset.largeImage;
+            modalImage.alt = button.querySelector("img").alt;
+            modalTitle.textContent = button.dataset.largeTitle;
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+            closeButton.focus();
+        }
+
+        function closeImageModal() {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            modalImage.src = "";
+        }
+
+        imageButtons.forEach((button) => {
+            button.addEventListener("click", () => openImageModal(button));
+        });
+
+        closeButton.addEventListener("click", closeImageModal);
+
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && modal.classList.contains("is-open")) {
+                closeImageModal();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -209,6 +209,22 @@ figure {
     margin: 0;
 }
 
+.image-pop-button {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: zoom-in;
+}
+
+.image-pop-button:focus-visible {
+    outline: 3px solid #7aa7ff;
+    outline-offset: 3px;
+}
+
 figure img {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -231,6 +247,68 @@ figcaption {
     display: block;
 }
 
+.image-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(12, 18, 28, 0.78);
+}
+
+.image-modal.is-open {
+    display: flex;
+}
+
+.image-modal-panel {
+    width: min(1120px, 100%);
+    max-height: calc(100vh - 48px);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.image-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.image-modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.image-modal-close {
+    width: 40px;
+    min-height: 40px;
+    display: grid;
+    place-items: center;
+    color: #1d2430;
+    background: #edf0f5;
+    border-radius: 50%;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.image-modal img {
+    width: 100%;
+    max-height: calc(100vh - 130px);
+    object-fit: contain;
+    display: block;
+    padding: 16px;
+    background: #f6f7f9;
+}
+
 @media (max-width: 820px) {
     .hero,
     .result-grid,
@@ -242,5 +320,13 @@ figcaption {
 
     h1 {
         font-size: 34px;
+    }
+
+    .image-modal {
+        padding: 12px;
+    }
+
+    .image-modal-panel {
+        max-height: calc(100vh - 24px);
     }
 }
