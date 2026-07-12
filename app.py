@@ -1,5 +1,6 @@
 import os
 import uuid
+from datetime import datetime
 
 os.environ["MPLCONFIGDIR"] = ".matplotlib"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -166,6 +167,23 @@ def get_weight_rows(model):
 def allowed_file(file_name):
     extension = os.path.splitext(file_name)[1].lower()
     return extension in ALLOWED_EXTENSIONS
+
+
+def make_prediction_file_name(predicted_label, confidence, extension):
+    label_text = predicted_label.lower()
+    confidence_text = f"{confidence * 100:.2f}".replace(".", "point")
+    timestamp = datetime.now().strftime("%b%d%H%M").lower()
+    base_name = f"{label_text}_{confidence_text}percent_{timestamp}"
+    file_name = f"{base_name}{extension}"
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], file_name)
+    counter = 2
+
+    while os.path.exists(file_path):
+        file_name = f"{base_name}_{counter}{extension}"
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], file_name)
+        counter = counter + 1
+
+    return file_name
 
 
 def summarize_layer_weights(layer):
@@ -390,11 +408,11 @@ def index():
         else:
             original_name = secure_filename(uploaded_file.filename)
             extension = os.path.splitext(original_name)[1].lower()
-            saved_name = f"{uuid.uuid4().hex}{extension}"
-            saved_path = os.path.join(app.config["UPLOAD_FOLDER"], saved_name)
-            uploaded_file.save(saved_path)
+            temporary_name = f"temporary_{uuid.uuid4().hex}{extension}"
+            temporary_path = os.path.join(app.config["UPLOAD_FOLDER"], temporary_name)
+            uploaded_file.save(temporary_path)
 
-            image_array = prepare_image(saved_path)
+            image_array = prepare_image(temporary_path)
             dog_probability = model.predict(image_array, verbose=0)[0][0]
 
             if dog_probability >= 0.5:
@@ -403,6 +421,10 @@ def index():
             else:
                 predicted_label = "Cat"
                 confidence = 1 - dog_probability
+
+            saved_name = make_prediction_file_name(predicted_label, confidence, extension)
+            saved_path = os.path.join(app.config["UPLOAD_FOLDER"], saved_name)
+            os.replace(temporary_path, saved_path)
 
             result = {
                 "image_url": f"/static/uploads/{saved_name}",
