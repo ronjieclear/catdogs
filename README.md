@@ -10,12 +10,6 @@ Try the live app here:
 https://catdog.averxon.com
 ```
 
-Backup DigitalOcean starter domain:
-
-```text
-https://catdogs-vmahp.ondigitalocean.app
-```
-
 ## Project Overview
 
 This project was created as a beginner-friendly machine learning web app. The goal is to show students how a CNN can be trained from scratch, saved, deployed, and used in a real web page.
@@ -161,6 +155,12 @@ http://127.0.0.1:5001
 
 This app is deployed on DigitalOcean App Platform.
 
+You can use this DigitalOcean referral link for possible credits or discounts:
+
+```text
+https://m.do.co/c/7df005da8dcb
+```
+
 Recommended settings:
 
 ```text
@@ -174,24 +174,6 @@ The `Procfile` contains:
 ```text
 web: gunicorn app:app
 ```
-
-## Custom Domain
-
-The custom subdomain is:
-
-```text
-catdog.averxon.com
-```
-
-DNS record:
-
-```text
-Type: CNAME
-Name: catdog
-Target: catdogs-vmahp.ondigitalocean.app
-```
-
-The custom domain must also be added inside DigitalOcean App Platform under the app's Networking / Domains settings.
 
 ## Notes
 
