@@ -2,13 +2,15 @@
 
 CatDogs is a simple web application that uses a custom TensorFlow CNN model to classify an uploaded image as either a dog or a cat.
 
-Live app:
+## Online Demo
+
+Try the live app here:
 
 ```text
 https://catdog.averxon.com
 ```
 
-DigitalOcean starter domain:
+Backup DigitalOcean starter domain:
 
 ```text
 https://catdogs-vmahp.ondigitalocean.app
