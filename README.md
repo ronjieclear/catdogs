@@ -5,8 +5,11 @@ CatDogs is a simple web application that uses a custom TensorFlow CNN model to c
 ## Online Demo
 
 Try the live app here:
+
 [https://catdog.averxon.com/](https://catdog.averxon.com/)
-or here
+
+If the custom domain is unavailable or shows an error, use this backup demo link:
+
 [https://catdogs-vmahp.ondigitalocean.app/](https://catdogs-vmahp.ondigitalocean.app/)
 
 ## Project Overview
